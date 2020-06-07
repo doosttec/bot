@@ -1,0 +1,19 @@
+{
+  "name": "creative-core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0",
+    "html-minifier": "^4.0.0",
+    "megadb": "^3.4.0",
+    "ms": "^2.1.2",
+    "mustache": "^4.0.1"
+  }
+}
