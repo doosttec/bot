@@ -1,0 +1,18 @@
+const megadb = require("megadb");
+const reactions = new megadb.crearDB("reactions");
+
+exports.run = async (client, message, args) => {
+	if (!message.member.permissions.has("MANAGE_GUILD")) return message.channel.send("No tienes permisos para esto.")
+	if(!args[0]) return message.channel.send("Especifica la ID del mensaje")
+	if(!reactions.tiene(`${message.guild.id}.reactions.${args[0]}`)) return message.channel.send(`No se a encontrado esa ID en la base de datos, porfavor creelo usando \`createreact\`\n\`Uso\`: ${process.env.prefix}createreact <canal del mensaje> <id del mensaje>`)
+	let role = message.mentions.roles.first();
+	if(!role) return message.channel.send("Menciona el rol que quiere dar")
+	if(!args[2]) return message.channel.send("Coloque el emoji que dara el rol")
+	let dbget = await reactions.obtener(`${message.guild.id}.reactions.${args[0]}`);
+	let channel = message.guild.channels.cache.get(dbget.channelID);
+	let msg = await channel.messages.fetch(args[0]);
+	msg.react(args[2]);
+	dbget.emojis.push({ role: role.id, emoji: args[2]});
+	reactions.establecer(`${message.guild.id}.reactions.${args[0]}`, dbget);
+	message.channel.send("Configuracion guardada")
+}
